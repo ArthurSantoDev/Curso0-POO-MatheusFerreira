@@ -1,4 +1,4 @@
-package Exercicios;
+package Exercicio1;
 
 public class Telefonista extends Funcionario{
 
