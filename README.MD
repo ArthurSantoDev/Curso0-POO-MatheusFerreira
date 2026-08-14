@@ -388,3 +388,192 @@ Aqui usamos o groupingBy no collectors para agrupar os itens.
 ```
 
 Aqui usamos um join que vai separar os elementos por ";".
+
+# Tratamento de Erros: Try-Catch
+
+Ele deve ser usado com cuidado, onde faz sentido usar em exceções.
+
+Ele é custoso em performance; se usado frequentemente, pode causar impactos negativos. Ele traz más práticas de design quando torna o código menos legível. Na captura genérica de exceções, ele pode esconder o problema, que deveria ser tratado de forma mais específica, silenciando exceções — pois não faz sentido criar um catch vazio. E na manutenção, ele pode dificultar quando usado em excesso.
+
+Se o erro for previsível, ele pode ser evitado por uma condicional, e assim fazemos a verificação condicional, caso não use o try-catch para lidar com isso.
+
+Vamos a exemplos:
+
+## Validar exceções antes de executar uma ação
+
+```java
+try {
+    int[] arr = new int[10];
+    System.out.println(arr[11]);
+
+} catch (ArrayIndexOutOfBoundsException e) {
+    System.out.println("Índice fora dos limites do array");
+}
+```
+
+Mas podemos tratar essa mesma exceção com um if e else:
+
+```java
+int[] arr1 = new int[10];
+int index = 11;
+if (index >= 0 && index < arr1.length) {
+    System.out.println(arr1[index]);
+} else {
+    System.out.println("Índice fora dos limites do array");
+}
+```
+
+### Outro exemplo na mesma linha de raciocínio
+
+```java
+try {
+    String text = null;
+    System.out.println(text.length());
+} catch (NullPointerException e) {
+    System.out.println("Objeto nulo acessado");
+}
+```
+
+```java
+String text1 = null;
+if (text1 != null) {
+    System.out.println(text1.length());
+} else {
+    System.out.println("Objeto nulo acessado");
+}
+```
+
+### Outro exemplo na mesma linha de raciocínio
+
+```java
+try {
+    int number = Integer.parseInt("abc");
+
+} catch (NumberFormatException e) {
+    System.out.println("Formato de número inválido");
+}
+```
+
+```java
+int number1 = Integer.parseInt("abc");
+if (number1 >= Integer.MIN_VALUE && number1 <= Integer.MAX_VALUE) {
+    System.out.println(number1);
+} else {
+    System.out.println("Formato de número inválido");
+}
+```
+
+## Exemplo de try-catch
+
+```java
+try {
+    int soma = Integer.parseInt(idade + "a");
+    System.out.println(soma);
+
+} catch (NumberFormatException e) {
+    System.out.println(e.getMessage());
+    System.out.println(e.getStackTrace());
+    System.out.println(e);
+    System.out.println(e.getClass());
+    System.out.println("Erro: Formato de número inválido");
+}
+```
+
+## Tratamento de título específico
+
+```java
+try {
+    int soma = Integer.parseInt(idade + "a");
+    System.out.println(soma);
+
+} catch (NumberFormatException n) {
+    System.out.println("Erro: Formato de número inválido, não foi possível converter a soma!");
+} catch (Exception e) {
+    System.out.println("Erro não identificado!");
+}
+```
+
+## Cascata de tratamento de exceções
+
+```java
+try {
+    int soma = idade / 0;
+    System.out.println(soma);
+
+} catch (NumberFormatException n) {
+    System.out.println("Erro: Formato de número inválido, não foi possível converter a soma!");
+} catch (ArithmeticException a) {
+    System.out.println("Houve um erro de operação aritmética!");
+}
+```
+
+## Usando um laço for e Scanner
+
+```java
+Scanner sc = new Scanner(System.in);
+
+for (int i = 0; i < 3; i++) {
+    System.out.println("Digite um número: ");
+    String numero = sc.nextLine();
+
+    try {
+        int numConvertido = Integer.parseInt(numero);
+        System.out.println(numConvertido);
+
+    } catch (NumberFormatException n) {
+        System.out.println("Erro: Formato de número inválido, não foi possível converter a soma!");
+    } catch (ArithmeticException a) {
+        System.out.println("Houve um erro de operação aritmética!");
+    } catch (Exception e) {
+        System.out.println("Erro não identificado");
+    }
+
+}
+```
+
+## Usando while true
+
+```java
+Scanner sc = new Scanner(System.in);
+
+boolean opcao = false;
+
+while (opcao == false) {
+    System.out.println("Digite um número: ");
+    String numero = sc.nextLine();
+
+    try {
+        int numConvertido = Integer.parseInt(numero);
+        System.out.println(numConvertido);
+
+        opcao = true;
+
+    } catch (NumberFormatException n) {
+        System.out.println("Erro: Formato de número inválido, não foi possível converter a soma!");
+    } catch (ArithmeticException a) {
+        System.out.println("Houve um erro de operação aritmética!");
+    } catch (Exception e) {
+        System.out.println("Erro não identificado");
+    }
+
+}
+```
+
+## Usando um array em loop for
+
+```java
+int[] colInt = new int[5];
+colInt[0] = 1;
+colInt[1] = 5;
+colInt[2] = 10;
+colInt[3] = 15;
+colInt[4] = 20;
+
+for (int i = 0; i <= 5; i++) {
+    try {
+        System.out.println(colInt[i]);
+    } catch (ArrayIndexOutOfBoundsException a) {
+        System.out.println("Não existe este index: " + i);
+    }
+}
+```
