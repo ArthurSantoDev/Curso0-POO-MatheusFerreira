@@ -577,3 +577,26 @@ for (int i = 0; i <= 5; i++) {
     }
 }
 ```
+Throwable
+│
+├── Exception
+│   │
+│   ├── I/O Exception
+│   ├── SQL Exception
+│   ├── ClassNotFoundException
+│   └── RuntimeException
+│       │
+│       ├── ArithmeticException
+│       ├── NullPointerException
+│       ├── NumberFormatException
+│       └── IndexOutOfBoundException
+│           │
+│           ├── ArrayIndexOutOfBound
+│           └── StringIndexOutOfBound
+│
+└── Error
+│
+├── StackOverflowError
+├── VirtualMachineError
+└── OutOfMemoryError
+```
